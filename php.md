@@ -16,14 +16,3 @@ To help following these motto, we enforce the following rules from the [Object C
 
 Other rules are encouraged but not forced upon for simplicity.
 
-# Javascript Coding Standard
-
- - PHP PSR's make sense and apply.
- - Same Object Calisthenics apply.
-
-## AngularJS Best Practice
- - ``ng-app`` should be in ``<body>``
- - The app should be the mothership holding all submodules
-````javascript
-
-````
