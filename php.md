@@ -17,7 +17,9 @@ Style and indentation should follow the agreed upon PSR's:
  - [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
  - [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
 
-
+### In HTML
+ - Use ``<?= $myVar ?>`` to echo a variable.
+ - Do not use curly brakets. Use the [Alternative syntax for control structures](http://www.php.net/manual/en/control-structures.alternative-syntax.php)
 
 
 
