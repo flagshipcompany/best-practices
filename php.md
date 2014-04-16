@@ -1,6 +1,6 @@
 # PHP Coding Standards
 
-## Philopsohy
+## Philosophy
   - Keep it simple, stupid. ( KISS )
   - Don't Repeat Yourself ( DRY )
   - Single Responsibility Principe ( SRP )
