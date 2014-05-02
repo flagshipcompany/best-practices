@@ -105,9 +105,10 @@ git push --force origin rfcXXX
 
 ### Preparing a Production Release
 ```bash
+git fetch
 git checkout master
 git pull --rebase master
-git merge --no-ff staging
+git merge --no-ff origin/staging
 git push origin master
 ```
 
@@ -163,8 +164,9 @@ git branch -d release
 Then whenever staging is finally fixed, do a regular production release:
 
 ```bash
+git fetch
 git checkout master
-git merge --no-ff staging
+git merge --no-ff origin/staging
 ```
 
 ### I keep forgetting to delete my merged local branches. It's a mess now, what do I do?
