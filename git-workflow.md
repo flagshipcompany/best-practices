@@ -51,7 +51,7 @@ git push origin staging
 
 ### How to write commit messages
 
-- write "fixes #XXX - [description of the commit]" (note it's ``fixes`` not ``Fixes``), where XXX is the Trello card number
+- write "card #XXX - [description of the commit]", where XXX is the Trello card number
 - If it's a correction to an existing bug that was rejected, same syntax apply.
 - If it doesn't fix an existing issue but references one ( should be _very_ rare ), "[description] - ref #XXXX" 
 
