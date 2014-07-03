@@ -38,6 +38,8 @@ git config --global alias.mnf "merge --no-ff"
 
 
 git config --global alias.undo "reset --hard HEAD^1"
+git config --global alias.tree "log --graph --decorate --pretty=oneline --abbrev-commit --all"
+git config --global alias.hotfix "!git checkout master && git merge --no-ff --no-edit hotfix && git checkout staging && git merge --no-ff --no-edit hotfix && git branch -d hotfix"
 
 ```
 
