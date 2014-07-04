@@ -125,11 +125,17 @@ git checkout -b hotfix
 
 # do the edit->commit loop ( --amend if screw up. It really shouldn't be more than a commit or it's _not_ a hotfix )
 
+git hotfix
+
+#if you don't use the shortcut:
+
 git checkout master
 git merge --no-ff hotfix # production release
 git checkout staging
 git merge hotfix # if it can fast-forward, great, if not, merge bubble.
 git branch -d hotfix
+
+
 ```
 That will provide clean, worry free hotfixes!
 
