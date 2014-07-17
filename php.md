@@ -22,4 +22,9 @@ Style and indentation should follow the agreed upon PSR's:
  - Do not use curly brakets. Use the [Alternative syntax for control structures](http://www.php.net/manual/en/control-structures.alternative-syntax.php)
 
 
+## Number rounding
+ - When performing calculations of any kind, DO NOT round.
+ - Round to two decimals ONLY for display purposes. Use number_format() for pages and round() for API responses.
+
+
 
