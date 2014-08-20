@@ -3,8 +3,10 @@
  - Styling guide: https://github.com/bevacqua/js/
 
 ## AngularJS Best Practice
+ - Styling guide: https://github.com/johnpapa/angularjs-styleguide
  - ``ng-app`` should be in ``<body>``
  - The app should be the mother controller holding all submodules
- - Place the Builtin Providers first, then ours.
+ - When Injecting, place the Builtin Providers first, then ours.
  - Prefix all our modules with 'fcs.'
- - Styling guide: https://github.com/johnpapa/angularjs-styleguide
+ - A function returning an AJAX promise should begin by `fetch` ( e.g. `fetchUser(123)` )
+ 
