@@ -1,6 +1,7 @@
 # Javascript Coding Standard
 
  - Styling guide: https://github.com/bevacqua/js/
+ - - use the Service style everywhere. Do not use factories.
 
 ## AngularJS Best Practice
  - Styling guide: https://github.com/johnpapa/angularjs-styleguide
