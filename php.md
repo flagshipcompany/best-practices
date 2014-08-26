@@ -23,11 +23,13 @@ Style and indentation should follow the agreed upon PSR's:
  - Install php-cs-fixer `composer global require fabpot/php-cs-fixer @stable` and then `sudo ln -s ~/.composer/vendor/bin/php-cs-fixer /usr/bin/php-cs-fixer`
  - Open the Package Control, install "Phpcs"
  - Open its Preference > Package Settings > PHP Code Sniffer > user -settings and set this:
-```{
+```javascript
+{
     "php_cs_fixer_on_save": true,
     "php_cs_fixer_executable_path": "php-cs-fixer",
     "phpcs_executable_path": "phpcs",
-}```
+}
+```
 
 ### In HTML
  - Use ``<?= $myVar ?>`` to echo a variable.
