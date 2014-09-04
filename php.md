@@ -38,8 +38,8 @@ Style and indentation should follow the agreed upon PSR's:
 
 ## Number rounding
  - Taxes must be stored and calculated with 4 decimals.
- - Round subtotals to two decimals for calculations and display purposes.
- - Use number_format() for pages and round() for API responses.
+ - Round subtotals to two decimals for calculations.
+ - Always round to two decimals for display purposes. Use number_format() for pages and round() for API responses.
 
 
 
