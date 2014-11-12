@@ -14,8 +14,7 @@ There are some inconsistencies in the symfony system when it comes to these acco
 ```sql
 DELETE FROM entity_shipments
 WHERE created_at > [RUN_DATE_HERE (Y-m-d H:i:s)]
-;
-```
+;```
 6. We need to make sure that the accountables corresponding to non-reconciled shipments.
  ```sql
  # Removes cycle_id from non-reconciled shipments' accountables
@@ -23,8 +22,7 @@ UPDATE entity_accountables ac
 LEFT JOIN entity_shipments s ON s.id = ac.shipment_id
 SET ac.cycle_id = NULL
 WHERE s.is_reconciliated = 0
-;
-```
+;```
 7. Run the reconciliation in symfony again
 8. After it's done, take a screenshot of the reconciliation numbers from the reconciliations page and **name it properly**.
 9. Execute this query to create a table containing the costs and billables data from the reconciliation:
