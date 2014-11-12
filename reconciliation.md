@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS old_vals AS
 SELECT bi.shipment_id, bi.invoice_id, 
 bi.attribute_id, co.value as costValue, 
 bi.value, CONCAT(a.module, a.sub_module, a.name) AS attName, 
-s.tracking_number, s.is_adjusted, s.is_manual
+s.tracking_number, s.is_adjusted, s.is_manual, s.courier_id
 FROM entity_billables bi
 LEFT JOIN entity_shipments sh ON sh.id=bi.shipment_id
 LEFT JOIN attributes a ON  bi.attribute_id = a.id
@@ -58,8 +58,8 @@ Since the interface to run a reconciliation didn't exist at the time this text w
 6. Check the reconlogs for problems.
 7. This query will show you the differences between the symfony reconciliation data and the one you just ran:
 ```sql
-SELECT ov.*, if((ov.costValue - nv.fcs_total) < 0.004, 0.0, (ov.costValue - nv.fcs_total)) as diffCost
-, if((ov.value - nv.total) < 0.004, 0.0, (ov.value - nv.total)) as diffBill
+SELECT ov.*, if(ABS(ov.costValue - nv.fcs_total) < 0.004, 0.0, (ov.costValue - nv.fcs_total)) as diffCost
+, if(ABS(ov.value - nv.total) < 0.004, 0.0, (ov.value - nv.total)) as diffBill
 , nv.fcs_amount, nv.fcs_total, nv.total
 FROM old_vals ov
 RIGHT JOIN (
