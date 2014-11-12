@@ -76,7 +76,7 @@ HAVING ABS(diffCost) > 0.005 OR ABS(diffBill) >= 0.07
 ORDER BY ov.shipment_id
 ;
 ```
-Some differences in the costs are normal because we don't reconcile differences of less than one CAD.
+Some small differences are normal.
 
 #### Other useful queries
 * Total debits for a cycle and courier:
