@@ -17,7 +17,7 @@ WHERE created_at > [RUN_DATE_HERE (Y-m-d H:i:s)]
 ;
 ```
 6. We need to make sure that the accountables corresponding to non-reconciled shipments.
- ```sql
+```sql
 # Removes cycle_id from non-reconciled shipments' accountables
 UPDATE entity_accountables ac
 LEFT JOIN entity_shipments s ON s.id = ac.shipment_id
