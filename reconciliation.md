@@ -40,6 +40,7 @@ LEFT JOIN attributes a ON  bi.attribute_id = a.id
 LEFT JOIN entity_shipments s ON s.id = bi.shipment_id
 LEFT JOIN entity_costs co ON co.shipment_id = bi.shipment_id AND co.attribute_id = bi.attribute_id
 WHERE bi.invoice_id = [CYCLE_ID_HERE]
+AND co.invoice_id = [CYCLE_ID_HERE]
 AND bi.attribute_id = 56
 AND sh.courier_id = [COURIER_ID_HERE]
 ORDER BY bi.shipment_id
