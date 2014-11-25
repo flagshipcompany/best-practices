@@ -16,7 +16,7 @@ DELETE FROM entity_shipments
 WHERE created_at > [RUN_DATE_HERE (Y-m-d H:i:s)]
 ;
 ```
-6. We need to make sure that the accountables corresponding to non-reconciled shipments.
+6. We need to make sure that the accountables corresponding to non-reconciled shipments don't have a cycle_id specified.
 ```sql
 # Removes cycle_id from non-reconciled shipments' accountables
 UPDATE entity_accountables ac
@@ -59,12 +59,12 @@ Since the interface to run a reconciliation didn't exist at the time this text w
 6. Check the reconlogs for problems.
 7. This query will show you the differences between the symfony reconciliation data and the one you just ran:
 ```sql
-SELECT ov.*, if(ABS(ov.costValue - nv.fcs_total) < 0.004, 0.0, (ov.costValue - nv.fcs_total)) as diffCost
-, if(ABS(ov.value - nv.total) < 0.004, 0.0, (ov.value - nv.total)) as diffBill
+SELECT ov.*, if(abs(ov.costValue - nv.fcs_total) < 0.004, 0.0, (ov.costValue - nv.fcs_total)) as diffCost
+, if(abs(ov.value - nv.total) < 0.004, 0.0, (ov.value - nv.total)) as diffBill
 , nv.fcs_amount, nv.fcs_total, nv.total
 FROM old_vals ov
 RIGHT JOIN (
-	SELECT ac.shipment_id, sum(ac.fcs_amount) as fcs_amount, sum(ac.fcs_total) as fcs_total, sum(ac.amount) as amount, sum(ac.total) as total
+	SELECT ac.shipment_id, sum(ac.fcs_amount) as fcs_amount, sum(ac.fcs_total) as fcs_total, sum(if(ac.amount <> 0.0, ac.amount, 0.0)) as amount, sum(if(ac.total <> 0.0, ac.total, 0.0)) as total
 	FROM entity_accountables ac
 	LEFT JOIN entity_shipments s ON s.id = ac.shipment_id
 	WHERE ac.cycle_id = [CYCLE_ID_HERE]
@@ -73,7 +73,7 @@ RIGHT JOIN (
 	GROUP BY ac.shipment_id
 	ORDER BY ac.shipment_id
 ) nv ON nv.shipment_id = ov.shipment_id
-HAVING ABS(diffCost) > 0.005 OR ABS(diffBill) >= 0.07 
+HAVING ABS(diffCost) > 0.001 OR ABS(diffBill) >= 0.01
 ORDER BY ov.shipment_id
 ;
 ```
