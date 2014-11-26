@@ -64,7 +64,11 @@ SELECT ov.*, if(abs(ov.costValue - nv.fcs_total) < 0.004, 0.0, (ov.costValue - n
 , nv.fcs_amount, nv.fcs_total, nv.total
 FROM old_vals ov
 RIGHT JOIN (
-	SELECT ac.shipment_id, sum(ac.fcs_amount) as fcs_amount, sum(ac.fcs_total) as fcs_total, sum(if(ac.amount <> 0.0, ac.amount, 0.0)) as amount, sum(if(ac.total <> 0.0, ac.total, 0.0)) as total
+	SELECT ac.shipment_id, 
+	sum(ac.fcs_amount) as fcs_amount, 
+	sum(ac.fcs_total) as fcs_total, 
+	sum(if(ac.amount > 0.0, ac.amount, 0.0)) as amount, 
+	sum(if(ac.total > 0.0, ac.total, 0.0)) as total
 	FROM entity_accountables ac
 	LEFT JOIN entity_shipments s ON s.id = ac.shipment_id
 	WHERE ac.cycle_id = [CYCLE_ID_HERE]
