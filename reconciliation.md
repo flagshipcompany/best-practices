@@ -102,3 +102,19 @@ AND sh.courier_id = [COURIER_ID_HERE]
 GROUP BY cycle_id
 ;
 ```
+
+#### How to clear the queue
+The queue can be cleared by usin the redis command line interface
+```bash
+$ redis-cli
+```
+Then execute the following command to delete everything from all databases:
+```
+> flushall
+```
+If you want to delete the contents of the **redis-queue** database only, then research how to do it and update this document.
+
+Execute **exit** to exit the redis-cli
+```
+> exit
+```
