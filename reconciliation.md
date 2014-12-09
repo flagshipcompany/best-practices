@@ -42,7 +42,7 @@ LEFT JOIN entity_costs co ON co.shipment_id = bi.shipment_id AND co.attribute_id
 WHERE bi.invoice_id = [CYCLE_ID_HERE]
 AND co.invoice_id = [CYCLE_ID_HERE]
 AND bi.attribute_id = 56
-AND sh.courier_id = [COURIER_ID_HERE]
+AND sh.courier_id = [COURIER_ID_HERE] # This line may be commented out if checking for more than one courier
 ORDER BY bi.shipment_id
 ;
 ```
