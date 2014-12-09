@@ -67,8 +67,8 @@ RIGHT JOIN (
 	SELECT ac.shipment_id, 
 	sum(ac.fcs_amount) as fcs_amount, 
 	sum(ac.fcs_total) as fcs_total, 
-	sum(if(ac.amount > 0.0, ac.amount, 0.0)) as amount, 
-	sum(if(ac.total > 0.0, ac.total, 0.0)) as total
+	sum(if(ac.amount > 0.0, ac.amount, 0.0)) as amount, #For UPS, remove the if
+	sum(if(ac.total > 0.0, ac.total, 0.0)) as total #For UPS, remove the if
 	FROM entity_accountables ac
 	LEFT JOIN entity_shipments s ON s.id = ac.shipment_id
 	WHERE ac.cycle_id = [CYCLE_ID_HERE]
@@ -81,7 +81,14 @@ HAVING ABS(diffCost) > 0.001 OR ABS(diffBill) >= 0.01
 ORDER BY ov.shipment_id
 ;
 ```
-Some small differences are normal.
+
+#### How to interpret this query's result
+##### UPS
+* Negative difference in costs with zero difference in what was billed. It means that the shipment was not adjusted because the cost was lower than what was originally quoted. These rows don't represent a problem.
+* Positive, less than 1.0 difference in cost and a difference of one or two dollars in what was billed. It means a small charge was ignored. These rows don't represent a problem.
+* Zero difference in cost and negative difference in what was billed. It means that, most likely, the service was adjusted to match the costs and, this time, the markup was calculated properly. These rows don't represent a problem.
+* Negative, more than 5 dollars difference in costs and what was billed. Maybe an address correction was applied to the shipment automatically; check the recon logs. If no address correction was applied, then this row represents a problem.
+
 
 #### Other useful queries
 * Total debits for a cycle and courier:
