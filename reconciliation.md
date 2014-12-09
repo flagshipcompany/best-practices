@@ -82,7 +82,7 @@ ORDER BY ov.shipment_id
 ;
 ```
 
-#### How to interpret this query's result
+##### How to interpret this query's result
 ##### UPS
 * Negative difference in costs with zero difference in what was billed. It means that the shipment was not adjusted because the cost was lower than what was originally quoted. These rows don't represent a problem.
 * Positive, less than 1.0 difference in cost and a difference of one or two dollars in what was billed. It means a small charge was ignored. These rows don't represent a problem.
