@@ -2,9 +2,9 @@
 
 An overview of the architecture can be found [here](https://docs.google.com/a/flagshipcompany.com/drawings/d/1v5ejEbdLpRqEOIqFigHtpRH55Lko0r1H5e6LCQ-4NeI/edit?usp=sharing).
 
-#### Tips for development
+#### Tips for testing
 The Laravel reconciliation, unlike the symfony one, doesn't use costs and billables; it uses "accountables".
-There are some inconsistencies in the symfony system when it comes to these accountables because the implementation has not been fully completed. So, when you load a database backup, there are some queries you need to execute to make sure the database is in the ideal condition to work with it.
+There were some inconsistencies in the symfony system when it comes to these accountables because the implementation had not been fully completed; therefore, we will ignore data created before October 31, 2014 at 19:00.
 
 1. Load a dabase backup; ideally, the one for the day after the reconciliation you want to work with was run.
 2. Run the necessary migrations to avoid any errors.
