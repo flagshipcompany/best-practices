@@ -76,8 +76,11 @@ ORDER BY ov.shipment_id
 ##### UPS
 * Negative difference in costs with zero difference in what was billed. It means that the shipment was not adjusted because the cost was lower than what was originally quoted. These rows don't represent a problem.
 * Positive, less than 1.0 difference in cost and a difference of one or two dollars in what was billed. It means a small charge was ignored. These rows don't represent a problem.
-* Zero difference in cost and negative difference in what was billed. It means that, most likely, the service was adjusted to match the costs and, this time, the markup was calculated properly. These rows don't represent a problem.
+* Zero or small difference in cost and small difference in what was billed. It means that, most likely, the service was adjusted to match the costs and, this time, the markup was calculated properly. Check its accountables to see if that's the case. If so, these rows don't represent a problem.
 * Negative, more than 5 dollars difference in costs and what was billed. Maybe an address correction was applied to the shipment automatically; check the recon logs. If no address correction was applied, then this row represents a problem.
+* If in doubt, check that the accountables match the invoice charges, if they do, everything is fine. If the differences in costs and what was billed are negative and there are no **adjustment** accountables, everything is fine also.
+* Check the reconciliation's entity_reconlog rows. We need to target the items type **Mismatch**. To begin, discard "*Costs(0 $) do not match actual courier Costs([NEGATIVE_AMOUNT])*" because they are debits (if I'm not mistaken). Then analyze each remaining case individually, if any.
+* It is very important not to lose your patience.
 
 ##### Purolator
 * Negative difference in costs with zero difference in what was billed. It means that the shipment was not adjusted because the cost was lower than what was originally quoted. These rows don't represent a problem.
