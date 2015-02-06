@@ -8,15 +8,9 @@ There were some inconsistencies in the symfony system when it comes to these acc
 
 1. Load a dabase backup; ideally, the one for the day after the reconciliation you want to work with was run.
 2. Run the necessary migrations to avoid any errors.
-3. Delete all shipments that were created on or after the date the reconciliation was supposed to be run (so that we always have the same quantity of 3rd-party shipments).
-```sql
-DELETE FROM entity_shipments
-WHERE created_at > [SUPPOSED_RUN_DATE_HERE (Y-m-d H:i:s)]
-;
-```
-4. Run the reconciliation or reconciliations in symfony.
-5. After it's done, take a screenshot of the reconciliation numbers from the reconciliations page and **name it properly**.
-6. Execute this query to create a table containing the costs and billables data from the reconciliation:
+3. Run the reconciliation or reconciliations in symfony.
+4. After it's done, take a screenshot of the reconciliation numbers from the reconciliations page and **name it properly**.
+5. Execute this query to create a table containing the costs and billables data from the reconciliation:
 ```sql
 CREATE TABLE IF NOT EXISTS old_vals AS
 SELECT bi.shipment_id, bi.invoice_id, 
@@ -35,7 +29,7 @@ AND bi.attribute_id = 56
 ORDER BY bi.shipment_id
 ;
 ```
-7. You may copy the reconlogs that belong to the reconciliation and paste them in a spreadsheet. They may be useful.
+6. You may copy the reconlogs that belong to the reconciliation and paste them in a spreadsheet. They may be useful.
 
 #### Running the test reconciliation
 Since the interface to run a reconciliation didn't exist at the time this text was written, the reconciliator class test must be used to run a reconciliation.
@@ -56,8 +50,8 @@ RIGHT JOIN (
 	SELECT ac.shipment_id, 
 	sum(ac.fcs_amount) as fcs_amount, 
 	sum(ac.fcs_total) as fcs_total, 
-	sum(if(ac.amount > 0.0, ac.amount, 0.0)) as amount, #For UPS, remove the if
-	sum(if(ac.total > 0.0, ac.total, 0.0)) as total #For UPS, remove the if
+	sum(ac.amount) as amount,
+	sum(ac.total) as total
 	FROM entity_accountables ac
 	LEFT JOIN entity_shipments s ON s.id = ac.shipment_id
 	WHERE ac.cycle_id = [CYCLE_ID_HERE]
@@ -79,7 +73,6 @@ ORDER BY ov.shipment_id
 * Zero or small difference in cost and small difference in what was billed. It means that, most likely, the service was adjusted to match the costs and, this time, the markup was calculated properly. Check its accountables to see if that's the case. If so, these rows don't represent a problem.
 * Negative, more than 5 dollars difference in costs and what was billed. Maybe an address correction was applied to the shipment automatically; check the recon logs. If no address correction was applied, then this row represents a problem.
 * If in doubt, check that the accountables match the invoice charges, if they do, everything is fine. If the differences in costs and what was billed are negative and there are no **adjustment** accountables, everything is fine also.
-* Fully-debited shipments *should* appear as zero difference in cost and a couple of dollars, positive difference in what was billed.
 * Check the reconciliation's entity_reconlog rows. We need to target the items type **Mismatch**. To begin, discard "*Costs(0 $) do not match actual courier Costs([NEGATIVE_AMOUNT])*" because they are debits (if I'm not mistaken). Then analyze each remaining case individually, if any.
 * It is very important not to lose your patience.
 
