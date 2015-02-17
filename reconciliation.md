@@ -111,7 +111,7 @@ GROUP BY cycle_id
 ```
 
 #### How to clear the queue
-The queue can be cleared by usin the redis command line interface
+The queue can be cleared by using the redis command line interface
 ```bash
 $ redis-cli
 ```
