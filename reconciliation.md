@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS old_vals AS
 SELECT bi.shipment_id, bi.invoice_id, 
 bi.attribute_id, co.value as costValue, 
 bi.value, CONCAT(a.module, a.sub_module, a.name) AS attName, 
-s.tracking_number, s.is_adjusted, s.is_manual, s.courier_id
+s.tracking_number, s.is_adjusted as adj, s.is_manual as manual, s.courier_id
 FROM entity_billables bi
 LEFT JOIN entity_shipments sh ON sh.id=bi.shipment_id
 LEFT JOIN attributes a ON  bi.attribute_id = a.id
@@ -42,14 +42,16 @@ Since the interface to run a reconciliation didn't exist at the time this text w
 6. Check the reconlogs for problems.
 7. This query will show you the differences between the symfony reconciliation data and the one you just ran:
 ```sql
-SELECT ov.*, if(abs(ov.costValue - nv.fcs_total) < 0.004, 0.0, (ov.costValue - nv.fcs_total)) as diffCost
+ov.*, nv.shipment_id as newId, nv.is_adjusted as newAdj, nv.is_manual as newMan
+,if(abs(ov.costValue - nv.fcs_total) < 0.004, 0.0, (ov.costValue - nv.fcs_total)) as diffCost
 , if(abs(ov.value - nv.total) < 0.004, 0.0, (ov.value - nv.total)) as diffBill
 , nv.fcs_amount, nv.fcs_total, nv.total
 FROM old_vals ov
-RIGHT JOIN (
-	SELECT ac.shipment_id, 
-	sum(ac.fcs_amount) as fcs_amount, 
-	sum(ac.fcs_total) as fcs_total, 
+LEFT JOIN (
+	SELECT s.tracking_number, ac.shipment_id,
+	s.is_adjusted, s.is_manual,
+	sum(ac.fcs_amount) as fcs_amount,
+	sum(ac.fcs_total) as fcs_total,
 	sum(ac.amount) as amount,
 	sum(ac.total) as total
 	FROM entity_accountables ac
@@ -58,11 +60,13 @@ RIGHT JOIN (
 	AND s.courier_id = [COURIER_ID_HERE]
 	AND ac.type != 'debit'
 	AND s.created_at > '2014-10-31 19:00:00' #We ignore shipments created before this time
-	GROUP BY ac.shipment_id
+	GROUP BY s.tracking_number
 	ORDER BY ac.shipment_id
-) nv ON nv.shipment_id = ov.shipment_id
-HAVING ABS(diffCost) > 0.001 OR ABS(diffBill) >= 0.01
-ORDER BY ov.shipment_id
+) nv ON nv.tracking_number = ov.tracking_number
+WHERE ov.courier_id = [COURIER_ID_HERE]
+HAVING ABS(diffCost) > 1.0 OR ABS(diffBill) >= 1.0 
+OR nv.fcs_amount IS NULL
+ORDER BY ov.tracking_number
 ;
 ```
 
