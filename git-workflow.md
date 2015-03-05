@@ -120,21 +120,14 @@ git push origin master
 ```bash
 # Hotfixes should be a branch of master then merged into master and rebased into staging.
 
-git checkout master
-git checkout -b hotfix
-
-# do the edit->commit loop ( --amend if screw up. It really shouldn't be more than a commit or it's _not_ a hotfix )
-
-git hotfix
-
-#if you don't use the shortcut:
-
-git checkout master
-git merge --no-ff hotfix # production release
 git checkout staging
-git merge hotfix # if it can fast-forward, great, if not, merge bubble.
-git branch -d hotfix
 
+# Commit the bug fix and note the commit hash
+
+git checkout master
+git cherry-pick [hash-of-the-commit-in-staging]
+git push origin master
+git push origin staging
 
 ```
 That will provide clean, worry free hotfixes!
