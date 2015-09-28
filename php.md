@@ -37,7 +37,7 @@ Style and indentation should follow the agreed upon PSR's:
 
 
 ## Number rounding
- - Taxes must be stored and handled with 2 decimals.
+ - Taxes must be stored as decimal, not float and handled with 4 decimals.
  - Always round (taxes, subtotals and totals) to two decimals for display purposes. Use number_format() for pages and round() for API responses.
 
 
